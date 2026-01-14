@@ -1,40 +1,28 @@
-import fs from "fs";
-import path from "path";
-
 export type VideoFile = {
-  name: string;
+  id: string;
+  filename: string;
   path: string;
-  createdAt: Date;
+  size: number;
+  createdAt: string;
+  modifiedAt: string;
 };
 
-const VIDEO_EXTENSIONS = [".mp4", ".mkv", ".avi", ".mov"];
+export async function getVideos(): Promise<VideoFile[]> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+  
+  try {
+    const response = await fetch(`${apiUrl}/videos`, {
+      cache: 'no-store',
+    });
 
-export function getVideos(): VideoFile[] {
-  const basePath = process.env.VIDEO_LIBRARY_PATH;
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
 
-  if (!basePath) {
-    throw new Error("VIDEO_LIBRARY_PATH is not defined");
+    const videos = await response.json();
+    return videos;
+  } catch (error) {
+    console.error('Error fetching videos:', error);
+    return [];
   }
-
-  const files = fs.readdirSync(basePath);
-
-  const videos = files
-    .filter((file) =>
-      VIDEO_EXTENSIONS.includes(path.extname(file).toLowerCase())
-    )
-    .map((file) => {
-      const fullPath = path.join(basePath, file);
-      const stats = fs.statSync(fullPath);
-
-      return {
-        name: file,
-        path: fullPath,
-        createdAt: stats.birthtime,
-      };
-    })
-    .sort(
-      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
-    );
-
-  return videos;
 }
