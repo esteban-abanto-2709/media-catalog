@@ -1,0 +1,41 @@
+@baseUrl = http://localhost:4000
+@videoId = 123e4567-e89b-12d3-a456-426614174000
+
+### =========================
+### LISTAR VIDEOS
+### =========================
+GET {{baseUrl}}/videos
+Accept: application/json
+
+
+### =========================
+### SCAN DE LIBRERÍA
+### =========================
+GET {{baseUrl}}/videos/scanVideos
+Accept: application/json
+
+
+### =========================
+### OBTENER VIDEO POR ID
+### =========================
+GET {{baseUrl}}/videos/{{videoId}}
+Accept: application/json
+
+
+### =========================
+### STREAM DE VIDEO
+### =========================
+GET {{baseUrl}}/videos/{{videoId}}/stream
+
+
+### =========================
+### PATCH VIDEO (metadata básica)
+### =========================
+PATCH {{baseUrl}}/videos/{{videoId}}
+Content-Type: application/json
+
+{
+  "title": "Nuevo título de prueba",
+  "description": "Descripción editada manualmente",
+  "providerUrl": "https://example.com"
+}

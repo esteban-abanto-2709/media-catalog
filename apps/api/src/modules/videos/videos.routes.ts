@@ -1,13 +1,12 @@
 import { Router } from 'express';
+import * as VideoController from './videos.controller.js';
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.json({ message: "Lista de videos" });
-});
-
-router.post('/', (req, res) => {
-  res.json({ message: "Video creado" });
-});
+router.get('/', VideoController.getAllVideos);
+router.get('/scanVideos', VideoController.scanVideos);
+router.get('/:id', VideoController.getVideoById);
+router.get('/:id/stream', VideoController.streamVideo);
+router.patch('/:id', VideoController.updateVideo);
 
 export default router;
