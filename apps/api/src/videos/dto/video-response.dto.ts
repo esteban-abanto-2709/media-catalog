@@ -11,10 +11,8 @@ export class VideoResponseDto {
   duration: number | null;
   width: number | null;
   height: number | null;
-  codec: string | null;
-  mimeType: string | null;
   providerUrl: string | null;
-  createdAt: Date;
+  createdAt: Date | null;
   uploadedAt: Date;
   updatedAt: Date;
 
