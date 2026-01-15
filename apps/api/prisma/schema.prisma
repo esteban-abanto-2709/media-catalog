@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Video {
+  id       String  @id @default(uuid())
+  title    String
+  filename String  @unique
+  path     String
+  actors   Actor[] @relation("ActorToVideo")
+
+  @@index([filename])
+  @@index([title])
+}
+
+model Actor {
+  id    String  @id @default(uuid())
+  name  String  @unique
+  Video Video[] @relation("ActorToVideo")
+
+  @@index([name])
+}

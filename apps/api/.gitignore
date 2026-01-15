@@ -44,3 +44,5 @@ logs
 # --- Sistema Operativo ---
 .DS_Store
 Thumbs.db
+
+/src/generated/prisma
