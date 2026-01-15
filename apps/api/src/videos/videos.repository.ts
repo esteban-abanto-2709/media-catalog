@@ -1,68 +1,50 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import * as fs from 'fs/promises';
-import * as path from 'path';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class VideosRepository {
-  private readonly videoPath: string;
-
-  constructor(private configService: ConfigService) {
-    const path = this.configService.get<string>('VIDEO_LIBRARY_PATH');
-    if (!path) {
-      throw new Error('VIDEO_LIBRARY_PATH environment variable is required');
-    }
-    this.videoPath = path;
-  }
+  constructor(private readonly prisma: PrismaService) { }
 
   async getAllVideos() {
-    try {
-      const files = await fs.readdir(this.videoPath);
+    return this.prisma.video.findMany({
+      include: {
+        tags: true,
+        producers: true,
+        actors: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
 
-      // Filtrar solo archivos de video
-      const videoExtensions = [
-        '.mp4',
-        '.mkv',
-        '.avi',
-        '.mov',
-        '.wmv',
-        '.flv',
-        '.webm',
-      ];
-      const videoFiles = files.filter((file) =>
-        videoExtensions.some((ext) => file.toLowerCase().endsWith(ext)),
-      );
+  async getVideoById(id: string) {
+    const video = await this.prisma.video.findUnique({
+      where: { id },
+      include: {
+        tags: true,
+        producers: true,
+        actors: true,
+      },
+    });
 
-      const videos = await Promise.all(
-        videoFiles.map(async (filename) => {
-          const fullPath = path.join(this.videoPath, filename);
-          const stats = await fs.stat(fullPath);
-
-          return {
-            id: filename,
-            filename,
-            path: fullPath,
-            size: stats.size,
-            createdAt: stats.birthtime,
-            modifiedAt: stats.mtime,
-          };
-        }),
-      );
-
-      return videos;
-    } catch (error) {
-      throw new Error(`Error reading videos directory: ${error.message}`);
+    if (!video) {
+      throw new NotFoundException(`Video with id "${id}" not found`);
     }
+
+    return video;
   }
 
   async getVideoPath(id: string): Promise<string> {
-    const fullPath = path.join(this.videoPath, id);
+    const video = await this.prisma.video.findUnique({
+      where: { id },
+      select: { path: true },
+    });
 
-    try {
-      await fs.access(fullPath);
-      return fullPath;
-    } catch {
+    if (!video) {
       throw new NotFoundException(`Video with id "${id}" not found`);
     }
+
+    return video.path;
   }
 }
