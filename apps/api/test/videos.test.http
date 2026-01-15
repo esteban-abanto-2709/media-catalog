@@ -1,4 +1,58 @@
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:4000
+@videoId = REPLACE_WITH_YOUR_VIDEO_ID
+@tagId = REPLACE_WITH_TAG_ID
+@producerId = REPLACE_WITH_PRODUCER_ID
+@actorId = REPLACE_WITH_ACTOR_ID
 
-### Scan video library
-POST {{baseUrl}}/videos/scan
+### Get all videos
+GET {{baseUrl}}/videos
+
+### Get all videos
+GET {{baseUrl}}/videos/scan
+
+### Get video by Id
+GET {{baseUrl}}/videos/{{videoId}}
+
+### Update video basic info
+PATCH {{baseUrl}}/videos/{{videoId}}
+Content-Type: application/json
+
+{
+  "title": "Updated Video Title",
+  "description": "This is a great video about something interesting",
+  "providerUrl": "https://example.com/video",
+  "createdAt": "2024-01-15T00:00:00.000Z"
+}
+
+### Add tag to video
+POST {{baseUrl}}/videos/{{videoId}}/tags
+Content-Type: application/json
+
+{
+  "name": "Action"
+}
+
+### Remove tag from video
+DELETE {{baseUrl}}/videos/{{videoId}}/tags/{{tagId}}
+
+### Add producer to video
+POST {{baseUrl}}/videos/{{videoId}}/producers
+Content-Type: application/json
+
+{
+  "name": "Warner Bros"
+}
+
+### Remove producer from video
+DELETE {{baseUrl}}/videos/{{videoId}}/producers/{{producerId}}
+
+### Add actor to video
+POST {{baseUrl}}/videos/{{videoId}}/actors
+Content-Type: application/json
+
+{
+  "name": "Tom Hanks"
+}
+
+### Remove actor from video
+DELETE {{baseUrl}}/videos/{{videoId}}/actors/{{actorId}}

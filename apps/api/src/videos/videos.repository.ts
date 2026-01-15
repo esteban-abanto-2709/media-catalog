@@ -1,39 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { UpdateVideoDto } from './dto/update-video.dto';
 
 @Injectable()
 export class VideosRepository {
   constructor(private readonly prisma: PrismaService) { }
-
-  async getAllVideos() {
-    return this.prisma.video.findMany({
-      include: {
-        tags: true,
-        producers: true,
-        actors: true,
-      },
-      orderBy: {
-        updatedAt: 'desc',
-      },
-    });
-  }
-
-  async getVideoById(id: string) {
-    const video = await this.prisma.video.findUnique({
-      where: { id },
-      include: {
-        tags: true,
-        producers: true,
-        actors: true,
-      },
-    });
-
-    if (!video) {
-      throw new NotFoundException(`Video with id "${id}" not found`);
-    }
-
-    return video;
-  }
 
   async getVideoPath(id: string): Promise<string> {
     const video = await this.prisma.video.findUnique({
@@ -54,7 +25,7 @@ export class VideosRepository {
     });
     return count > 0;
   }
-  
+
   async createMinimal(data: {
     title: string;
     filename: string;
@@ -63,6 +34,146 @@ export class VideosRepository {
   }) {
     return this.prisma.video.create({
       data,
+    });
+  }
+
+  // ========== MÉTODOS DE EDICIÓN ==========
+
+  async updateVideo(id: string, data: UpdateVideoDto) {
+    return this.prisma.video.update({
+      where: { id },
+      data,
+      include: {
+        tags: true,
+        producers: true,
+        actors: true,
+      },
+    });
+  }
+
+  // ========== TAG OPERATIONS ==========
+
+  async findOrCreateTag(name: string) {
+    return this.prisma.tag.upsert({
+      where: { name },
+      update: {},
+      create: { name },
+    });
+  }
+
+  async addTagToVideo(videoId: string, tagId: string) {
+    return this.prisma.video.update({
+      where: { id: videoId },
+      data: {
+        tags: {
+          connect: { id: tagId },
+        },
+      },
+      include: {
+        tags: true,
+        producers: true,
+        actors: true,
+      },
+    });
+  }
+
+  async removeTagFromVideo(videoId: string, tagId: string) {
+    return this.prisma.video.update({
+      where: { id: videoId },
+      data: {
+        tags: {
+          disconnect: { id: tagId },
+        },
+      },
+      include: {
+        tags: true,
+        producers: true,
+        actors: true,
+      },
+    });
+  }
+
+  // ========== PRODUCER OPERATIONS ==========
+
+  async findOrCreateProducer(name: string) {
+    return this.prisma.producer.upsert({
+      where: { name },
+      update: {},
+      create: { name },
+    });
+  }
+
+  async addProducerToVideo(videoId: string, producerId: string) {
+    return this.prisma.video.update({
+      where: { id: videoId },
+      data: {
+        producers: {
+          connect: { id: producerId },
+        },
+      },
+      include: {
+        tags: true,
+        producers: true,
+        actors: true,
+      },
+    });
+  }
+
+  async removeProducerFromVideo(videoId: string, producerId: string) {
+    return this.prisma.video.update({
+      where: { id: videoId },
+      data: {
+        producers: {
+          disconnect: { id: producerId },
+        },
+      },
+      include: {
+        tags: true,
+        producers: true,
+        actors: true,
+      },
+    });
+  }
+
+  // ========== ACTOR OPERATIONS ==========
+
+  async findOrCreateActor(name: string) {
+    return this.prisma.actor.upsert({
+      where: { name },
+      update: {},
+      create: { name },
+    });
+  }
+
+  async addActorToVideo(videoId: string, actorId: string) {
+    return this.prisma.video.update({
+      where: { id: videoId },
+      data: {
+        actors: {
+          connect: { id: actorId },
+        },
+      },
+      include: {
+        tags: true,
+        producers: true,
+        actors: true,
+      },
+    });
+  }
+
+  async removeActorFromVideo(videoId: string, actorId: string) {
+    return this.prisma.video.update({
+      where: { id: videoId },
+      data: {
+        actors: {
+          disconnect: { id: actorId },
+        },
+      },
+      include: {
+        tags: true,
+        producers: true,
+        actors: true,
+      },
     });
   }
 }
