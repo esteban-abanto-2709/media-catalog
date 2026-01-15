@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { VideoFile } from "@/lib/videos";
+import { formatSize, formatDate } from "@/lib/utils/formatters";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -35,20 +36,6 @@ export default async function VideoPage({ params }: PageProps) {
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
   const videoUrl = `${apiUrl}/videos/${encodeURIComponent(video.id)}/stream`;
-
-  const formatSize = (bytes: number) => {
-    return (bytes / 1024 / 1024).toFixed(2);
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
 
   return (
     <main className="min-h-screen bg-black text-white">
@@ -85,7 +72,6 @@ export default async function VideoPage({ params }: PageProps) {
             <video
               src={videoUrl}
               controls
-              autoPlay
               className="w-full h-full"
               controlsList="nodownload"
             >
@@ -100,7 +86,7 @@ export default async function VideoPage({ params }: PageProps) {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
               <div>
                 <p className="text-gray-400">Size</p>
-                <p className="font-semibold">{formatSize(video.size)} MB</p>
+                <p className="font-semibold">{formatSize(video.size)}</p>
               </div>
 
               <div>

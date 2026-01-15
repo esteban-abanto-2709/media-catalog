@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatSize, formatDate } from "@/lib/utils/formatters";
 
 type VideoCardProps = {
   id: string;
@@ -8,17 +9,6 @@ type VideoCardProps = {
 };
 
 export default function VideoCard({ id, title, size, updatedAt }: VideoCardProps) {
-  const formatSize = (bytes: number) => {
-    return (bytes / 1024 / 1024).toFixed(2);
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
 
   return (
     <Link href={`/video/${encodeURIComponent(id)}`}>
@@ -39,7 +29,7 @@ export default function VideoCard({ id, title, size, updatedAt }: VideoCardProps
           </h3>
 
           <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
-            <span>{formatSize(size)} MB</span>
+            <span>{formatSize(size)}</span>
             <span>{formatDate(updatedAt)}</span>
           </div>
         </div>
