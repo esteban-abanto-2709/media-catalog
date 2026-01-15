@@ -2,12 +2,12 @@ import Link from "next/link";
 
 type VideoCardProps = {
   id: string;
-  filename: string;
+  title: string;
   size: number;
-  createdAt: string;
+  updatedAt: string;
 };
 
-export default function VideoCard({ id, filename, size, createdAt }: VideoCardProps) {
+export default function VideoCard({ id, title, size, updatedAt }: VideoCardProps) {
   const formatSize = (bytes: number) => {
     return (bytes / 1024 / 1024).toFixed(2);
   };
@@ -35,12 +35,12 @@ export default function VideoCard({ id, filename, size, createdAt }: VideoCardPr
 
         <div className="p-4 space-y-2">
           <h3 className="font-semibold text-sm line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-            {filename}
+            {title}
           </h3>
 
           <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
             <span>{formatSize(size)} MB</span>
-            <span>{formatDate(createdAt)}</span>
+            <span>{formatDate(updatedAt)}</span>
           </div>
         </div>
       </div>

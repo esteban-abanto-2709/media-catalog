@@ -13,7 +13,7 @@ export class VideosRepository {
         actors: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        updatedAt: 'desc',
       },
     });
   }

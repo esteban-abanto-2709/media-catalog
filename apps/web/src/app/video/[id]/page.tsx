@@ -95,7 +95,7 @@ export default async function VideoPage({ params }: PageProps) {
 
           {/* Info del video */}
           <div className="bg-gray-900 rounded-lg p-6 space-y-4">
-            <h1 className="text-2xl font-bold">{video.filename}</h1>
+            <h1 className="text-2xl font-bold">{video.title}</h1>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
               <div>
@@ -109,8 +109,8 @@ export default async function VideoPage({ params }: PageProps) {
               </div>
 
               <div>
-                <p className="text-gray-400">Modified</p>
-                <p className="font-semibold">{formatDate(video.modifiedAt)}</p>
+                <p className="text-gray-400">Uploaded</p>
+                <p className="font-semibold">{formatDate(video.uploadedAt)}</p>
               </div>
             </div>
           </div>

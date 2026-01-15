@@ -1,10 +1,10 @@
 export type VideoFile = {
   id: string;
-  filename: string;
+  title: string;
   path: string;
   size: number;
   createdAt: string;
-  modifiedAt: string;
+  updatedAt: string;
 };
 
 export async function getVideos(): Promise<VideoFile[]> {

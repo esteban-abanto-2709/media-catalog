@@ -2,10 +2,10 @@ import VideoCard from "./video-card";
 
 type Video = {
   id: string;
-  filename: string;
+  title: string;
   size: number;
   createdAt: string;
-  modifiedAt: string;
+  updatedAt: string;
 };
 
 type VideoGridProps = {
@@ -27,9 +27,9 @@ export default function VideoGrid({ videos }: VideoGridProps) {
         <VideoCard
           key={video.id}
           id={video.id}
-          filename={video.filename}
+          title={video.title}
           size={video.size}
-          createdAt={video.createdAt}
+          updatedAt={video.updatedAt}
         />
       ))}
     </div>
