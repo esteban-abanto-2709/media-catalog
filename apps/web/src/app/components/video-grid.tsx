@@ -5,7 +5,7 @@ type Video = {
   title: string;
   size: number;
   createdAt: string;
-  updatedAt: string;
+  uploadedAt: string;
 };
 
 type VideoGridProps = {
@@ -29,7 +29,7 @@ export default function VideoGrid({ videos }: VideoGridProps) {
           id={video.id}
           title={video.title}
           size={video.size}
-          updatedAt={video.updatedAt}
+          uploadedAt={video.uploadedAt}
         />
       ))}
     </div>

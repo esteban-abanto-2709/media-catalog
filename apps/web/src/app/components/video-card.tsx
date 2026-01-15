@@ -5,10 +5,10 @@ type VideoCardProps = {
   id: string;
   title: string;
   size: number;
-  updatedAt: string;
+  uploadedAt: string;
 };
 
-export default function VideoCard({ id, title, size, updatedAt }: VideoCardProps) {
+export default function VideoCard({ id, title, size, uploadedAt }: VideoCardProps) {
 
   return (
     <Link href={`/video/${encodeURIComponent(id)}`}>
@@ -30,7 +30,7 @@ export default function VideoCard({ id, title, size, updatedAt }: VideoCardProps
 
           <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
             <span>{formatSize(size)}</span>
-            <span>{formatDate(updatedAt)}</span>
+            <span>{formatDate(uploadedAt)}</span>
           </div>
         </div>
       </div>

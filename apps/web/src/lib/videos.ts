@@ -4,7 +4,7 @@ export type VideoFile = {
   path: string;
   size: number;
   createdAt: string;
-  updatedAt: string;
+  uploadedAt: string;
 };
 
 export async function getVideos(): Promise<VideoFile[]> {
