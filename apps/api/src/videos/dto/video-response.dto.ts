@@ -27,17 +27,14 @@ export class VideoResponseDto {
 export class TagDto {
   id: string;
   name: string;
-  slug: string;
 }
 
 export class ProducerDto {
   id: string;
   name: string;
-  slug: string;
 }
 
 export class ActorDto {
   id: string;
   name: string;
-  slug: string;
 }

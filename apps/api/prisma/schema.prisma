@@ -45,37 +45,34 @@ model Video {
 model Tag {
   id        String     @id @default(uuid())
   name      String     @unique
-  slug      String     @unique
   
   createdAt DateTime   @default(now())
   
   videos Video[]
   
-  @@index([slug])
+  @@index([name])
 }
 
 // PRODUCER
 model Producer {
   id        String          @id @default(uuid())
   name      String          @unique
-  slug      String          @unique
   
   createdAt DateTime        @default(now())
   
   videos Video[]
   
-  @@index([slug])
+  @@index([name])
 }
 
 // ACTOR
 model Actor {
   id        String       @id @default(uuid())
   name      String       @unique
-  slug      String       @unique
   
   createdAt DateTime     @default(now())
   
   videos Video[]
   
-  @@index([slug])
+  @@index([name])
 }
