@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================
+// VIDEO (Modelo principal)
+// ============================================
+model Video {
+  id          String    @id @default(uuid())
+  
+  // Metadatos básicos
+  title       String
+  description String?   // Opcional
+  filename    String    @unique
+  path        String
+  
+  // Metadatos técnicos
+  size        Int       // Bytes
+  duration    Int?      // Segundos
+  width       Int?      // Resolución ancho
+  height      Int?      // Resolución alto
+  codec       String?   // h264, hevc, etc.
+  mimeType    String?   // video/mp4, video/mkv
+  
+  // Provider (link externo)
+  providerUrl String?
+  
+  // Fechas
+  createdAt   DateTime  @default(now())
+  uploadedAt  DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relaciones implícitas (Solo la lista del otro modelo)
+  tags        Tag[]
+  producers   Producer[]
+  actors      Actor[]
+  
+  @@index([filename])
+  @@index([title])
+}
+
+// ============================================
+// TAG
+// ============================================
+model Tag {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  slug      String     @unique  // URL-friendly
+  
+  createdAt DateTime   @default(now())
+  
+  videos Video[]
+  
+  @@index([slug])
+}
+
+// ============================================
+// PRODUCER
+// ============================================
+model Producer {
+  id        String          @id @default(uuid())
+  name      String          @unique
+  slug      String          @unique
+  
+  createdAt DateTime        @default(now())
+  
+  videos Video[]
+  
+  @@index([slug])
+}
+
+// ============================================
+// ACTOR
+// ============================================
+model Actor {
+  id        String       @id @default(uuid())
+  name      String       @unique
+  slug      String       @unique
+  
+  createdAt DateTime     @default(now())
+  
+  videos Video[]
+  
+  @@index([slug])
+}
