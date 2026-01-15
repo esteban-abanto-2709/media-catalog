@@ -6,50 +6,46 @@ datasource db {
   provider = "postgresql"
 }
 
-// ============================================
 // VIDEO (Modelo principal)
-// ============================================
 model Video {
-  id          String    @id @default(uuid())
-  
-  // Metadatos básicos
+  id          String   @id @default(uuid())
+
+  // Metadatos editoriales (humanos)
   title       String
-  description String?   // Opcional
-  filename    String    @unique
+  description String?
+  createdAt   DateTime?
+
+  // Archivo
+  filename    String   @unique
   path        String
-  
+  size        Int
+  uploadedAt  DateTime @default(now())
+
   // Metadatos técnicos
-  size        Int       // Bytes
-  duration    Int?      // Segundos
-  width       Int?      // Resolución ancho
-  height      Int?      // Resolución alto
-  codec       String?   // h264, hevc, etc.
-  mimeType    String?   // video/mp4, video/mkv
-  
-  // Provider (link externo)
+  duration    Int?
+  width       Int?
+  height      Int?
+
+  // Provider
   providerUrl String?
-  
-  // Fechas
-  createdAt   DateTime  @default(now())
-  uploadedAt  DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  
-  // Relaciones implícitas (Solo la lista del otro modelo)
+
+  // Sistema
+  updatedAt   DateTime @updatedAt
+
+  // Relaciones
   tags        Tag[]
   producers   Producer[]
   actors      Actor[]
-  
+
   @@index([filename])
   @@index([title])
 }
 
-// ============================================
 // TAG
-// ============================================
 model Tag {
   id        String     @id @default(uuid())
   name      String     @unique
-  slug      String     @unique  // URL-friendly
+  slug      String     @unique
   
   createdAt DateTime   @default(now())
   
@@ -58,9 +54,7 @@ model Tag {
   @@index([slug])
 }
 
-// ============================================
 // PRODUCER
-// ============================================
 model Producer {
   id        String          @id @default(uuid())
   name      String          @unique
@@ -73,9 +67,7 @@ model Producer {
   @@index([slug])
 }
 
-// ============================================
 // ACTOR
-// ============================================
 model Actor {
   id        String       @id @default(uuid())
   name      String       @unique

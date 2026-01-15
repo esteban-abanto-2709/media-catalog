@@ -1,3 +1,5 @@
+// videos.types.ts no contiene clases tipo DTO.
+
 export class VideoResponseDto {
   id: string;
   title: string;

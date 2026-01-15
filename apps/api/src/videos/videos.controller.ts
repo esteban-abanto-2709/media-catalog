@@ -1,13 +1,20 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
+import { Controller, Get, Param, Res, Post } from '@nestjs/common';
 import type { Response } from 'express';
 import { VideosService } from './videos.service';
 import { VideoResponseDto } from './dto/video-response.dto';
+
+// no debemos usar fs en el controller
 import { createReadStream, statSync } from 'fs';
 
 @Controller('videos')
 export class VideosController {
   constructor(private readonly videosService: VideosService) {}
 
+  @Post('scan')
+  async scanVideos() {
+    return this.videosService.scanLibrary();
+  }
+  
   @Get()
   async getAll(): Promise<VideoResponseDto[]> {
     return this.videosService.findAll();

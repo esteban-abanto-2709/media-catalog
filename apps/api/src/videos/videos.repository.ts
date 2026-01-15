@@ -47,4 +47,22 @@ export class VideosRepository {
 
     return video.path;
   }
+
+  async existsByFilename(filename: string): Promise<boolean> {
+    const count = await this.prisma.video.count({
+      where: { filename },
+    });
+    return count > 0;
+  }
+  
+  async createMinimal(data: {
+    title: string;
+    filename: string;
+    path: string;
+    size: number;
+  }) {
+    return this.prisma.video.create({
+      data,
+    });
+  }
 }

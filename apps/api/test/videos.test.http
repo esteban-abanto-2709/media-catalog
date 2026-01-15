@@ -1,0 +1,4 @@
+@baseUrl = http://localhost:3000
+
+### Scan video library
+POST {{baseUrl}}/videos/scan
