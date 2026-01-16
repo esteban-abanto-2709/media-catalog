@@ -7,11 +7,13 @@ datasource db {
 }
 
 model Video {
-  id       String  @id @default(uuid())
-  title    String
-  filename String  @unique
-  path     String
-  actors   Actor[] @relation("ActorToVideo")
+  id         String   @id @default(uuid())
+  title      String
+  filename   String   @unique
+  path       String
+  size       Int
+  uploadedAt DateTime @default(now())
+  actors     Actor[]  @relation("ActorToVideo")
 
   @@index([filename])
   @@index([title])
